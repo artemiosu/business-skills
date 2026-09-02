@@ -1,0 +1,36 @@
+name: Skill proposal
+description: Propose a reusable business workflow
+title: "[Skill]: "
+labels: [proposal, skill]
+body:
+  - type: input
+    id: job
+    attributes:
+      label: Recurring job to be done
+      placeholder: "When an agent needs to…"
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Three realistic user requests
+    validations:
+      required: true
+  - type: textarea
+    id: failures
+    attributes:
+      label: Common failure modes and harms
+    validations:
+      required: true
+  - type: textarea
+    id: evaluation
+    attributes:
+      label: Observable success criteria
+    validations:
+      required: true
+  - type: textarea
+    id: overlap
+    attributes:
+      label: Existing alternatives or overlapping skills
+    validations:
+      required: true

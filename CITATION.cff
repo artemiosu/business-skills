@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If Business Skills helps your work, cite the repository."
+title: "Business Skills"
+type: software
+authors:
+  - name: "Artemiosu"
+repository-code: "https://github.com/artemiosu/business-skills"
+url: "https://github.com/artemiosu/business-skills"
+version: 0.1.0
+date-released: 2026-09-02
+license: Apache-2.0

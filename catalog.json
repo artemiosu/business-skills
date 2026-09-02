@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/artemiosu/business-skills",
+  "skills": [
+    {
+      "name": "horizon-scout",
+      "path": "skills/horizon-scout",
+      "version": "0.1.0",
+      "status": "experimental",
+      "summary": "Evidence-first horizon scanning and calibrated trend forecasts.",
+      "requires": ["python>=3.9"],
+      "tags": ["strategy", "foresight", "markets", "forecasting"]
+    }
+  ]
+}

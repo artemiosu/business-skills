@@ -1,0 +1,41 @@
+name: Bug report
+description: Report reproducible incorrect or unsafe behavior
+title: "[Bug]: "
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: "Thanks for helping improve Business Skills. Remove secrets and personal data."
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Skill
+      options: [horizon-scout, repository/tooling, other]
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and reproduction
+      description: Include the prompt, sanitized inputs, version/commit, and host.
+    validations:
+      required: true
+  - type: textarea
+    id: risk
+    attributes:
+      label: Impact or safety risk
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues.
+          required: true
+        - label: I removed secrets and personal data.
+          required: true

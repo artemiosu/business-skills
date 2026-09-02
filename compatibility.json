@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "standard": "https://agentskills.io/specification",
+  "tested_at": "2026-09-02",
+  "skill": "horizon-scout",
+  "core": {"status": "mechanical", "python": ["3.9", "3.12"]},
+  "hosts": {
+    "codex": {"status": "structural", "adapter": [".codex-plugin/plugin.json", "agents/openai.yaml"]},
+    "claude-code": {"status": "expected", "basis": "Agent Skills standard"},
+    "cursor": {"status": "expected", "basis": "Agent Skills standard"},
+    "github-copilot": {"status": "expected", "basis": "Agent Skills standard"},
+    "windsurf": {"status": "expected", "basis": "Agent Skills standard"},
+    "gemini-cli": {"status": "expected", "basis": "Agent Skills standard"}
+  },
+  "note": "Expected means standards-based compatibility, not completed behavioral testing. Model and tool differences can change outputs."
+}
