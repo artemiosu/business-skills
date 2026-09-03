@@ -1,7 +1,7 @@
 <div align="center">
-  <img src=".github/assets/social-preview.jpg" alt="Business Skills — Decision intelligence for AI agents" width="100%">
+  <img src=".github/assets/social-preview.jpg" alt="Business Skills — Evidence-first judgment for AI agents" width="100%">
   <h1>Business Skills</h1>
-  <p><strong>Decision intelligence for AI agents.</strong></p>
+  <p><strong>Evidence-first judgment for AI agents.</strong></p>
   <p>Open, evidence-first skills for strategy, markets, forecasting, and business judgment.</p>
 
   [![CI](https://github.com/artemiosu/business-skills/actions/workflows/validate.yml/badge.svg)](https://github.com/artemiosu/business-skills/actions/workflows/validate.yml)
@@ -17,6 +17,16 @@ Business Skills is a growing, cross-agent collection of reusable workflows desig
 
 Created and maintained by **[@artemiosu](https://github.com/artemiosu)**.
 
+## See the decision, not just the prompt
+
+| Question | Horizon Scout | Decision artifact |
+|---|---|---|
+| “Should a three-person team build an AI bookkeeping agent now?” | 7 dated signals · 5 source groups · adoption, timing, capture, and counterfactual gates · 3 resolvable forecasts | **MONITOR + bounded probe** — the trend is real, but standalone value capture is not proven |
+
+**[Read the live, cutoff-dated case →](examples/ai-accounting-agents-2026/README.md)** · [Inspect its evidence](examples/ai-accounting-agents-2026/signals.jsonl) · [Track its forecasts](examples/ai-accounting-agents-2026/forecast-ledger.jsonl)
+
+This is the core promise: replace “AI says this market is growing” with an auditable decision, explicit uncertainty, and a record that can later be scored.
+
 ## Start in 60 seconds
 
 ### Install with the Agent Skills CLI
@@ -25,7 +35,7 @@ Created and maintained by **[@artemiosu](https://github.com/artemiosu)**.
 npx skills add artemiosu/business-skills --skill horizon-scout
 ```
 
-The CLI supports multiple skill-aware agents and records anonymous install telemetry by default; set `DISABLE_TELEMETRY=1` to opt out. Before the repository is public, use the local installer below.
+The CLI supports multiple skill-aware agents and records anonymous install telemetry by default; set `DISABLE_TELEMETRY=1` to opt out. A local installer is also available below.
 
 ### Codex/manual fallback
 
@@ -86,7 +96,7 @@ Weak signals → source lineage → anti-hype gates → competing hypotheses
 - **Strategist:** `$horizon-scout Map the stalled, base, and accelerated scenarios for this shift and define monitoring triggers.`
 - **Investor or researcher:** `$horizon-scout Build a cutoff-safe evidence map, competing hypotheses, and resolvable forecasts for this thesis.`
 
-See the [complete synthetic walkthrough](examples/horizon-scout-synthetic-case.md) before using the workflow on a live decision.
+Start with the [live AI-accounting case](examples/ai-accounting-agents-2026/README.md), then use the [synthetic walkthrough](examples/horizon-scout-synthetic-case.md) to inspect the minimal artifact shape.
 
 ## Use without installing everything
 
