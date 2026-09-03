@@ -2,9 +2,9 @@
 
 ## Now
 
-- Publish experimental Horizon Scout and gather preregistered real-world calibration cases.
-- Add installation verification and cross-platform documentation.
-- Establish Discussions categories and private vulnerability reporting.
+- Resolve and update the first cutoff-dated public Horizon Scout case.
+- Gather preregistered real-world calibration cases without retrospective selection.
+- Add verified host/version results to the compatibility matrix.
 
 ## Next
 
@@ -17,6 +17,6 @@
 
 - Compatibility matrix across supported agent hosts.
 - Versioned skill registry and machine-readable catalog.
-- Public benchmark cases and prospective evaluation reports.
+- Additional public benchmark cases and prospective evaluation reports.
 
 Roadmap items are hypotheses, not promises. Propose or vote on problems through Discussions and issues.

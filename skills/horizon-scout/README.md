@@ -37,7 +37,7 @@ Decision contract → evidence map → anti-hype gate → competing hypotheses
 
 The skill records source lineage, counterevidence, reference classes, disagreement, probabilities, resolution rules, and review dates. Its local tools validate signals, prevent common ledger errors, and score resolved forecasts.
 
-See the [synthetic walkthrough](../../examples/horizon-scout-synthetic-case.md), [runtime instructions](SKILL.md), [methodology](references/workflow.md), and [evaluation limits](references/evaluation.md).
+See the [live, cutoff-dated AI-accounting case](../../examples/ai-accounting-agents-2026/README.md), [synthetic walkthrough](../../examples/horizon-scout-synthetic-case.md), [runtime instructions](SKILL.md), [methodology](references/workflow.md), and [evaluation limits](references/evaluation.md).
 
 ## Evidence status
 
