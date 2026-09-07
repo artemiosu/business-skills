@@ -1,0 +1,7 @@
+interface:
+  display_name: "Evidence Echo Forensics"
+  short_description: "Trace claim lineage and confirmed origins"
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#315C46"
+  default_prompt: "Use $evidence-echo-forensics to trace these claims to their independent evidence origins and test whether the apparent consensus survives."

@@ -20,7 +20,17 @@ Release notes:
 
 > The first Business Skill turns weak signals into falsifiable trend hypotheses, anti-hype checks, scenarios, calibrated forecasts, and reversible experiments. It includes a dependency-free ledger/scoring CLI and adversarial tests. This is decision support, not a prediction guarantee.
 
-Attach a source archive only if GitHub's automatic release archives are insufficient. Use tag `v0.1.0` and mark it as a pre-release while Horizon Scout remains stable beta.
+Attach a source archive only if GitHub's automatic release archives are insufficient. Use tag `v0.1.0` and mark it as a pre-release while Horizon Scout remains Experimental.
+
+## Release 0.2.0
+
+Title: `Business Skills 0.2 — Evidence Echo Forensics`
+
+Release hook:
+
+> Twelve citations can still be one observation. Evidence Echo Forensics traces a claim through wire stories, press releases, datasets, interviews, revisions, and AI summaries—then reports how many independently countable support units remain. It audits provenance, not truth or intent.
+
+Launch only after the official skill/plugin validators, repository checks, synthetic adversarial harness, installer smoke test, and an independent forward-test artifact pass. Publish mechanical results and limitations; do not describe the skill as field-validated until a public adjudicated corpus exists.
 
 ## Ethical distribution loop
 

@@ -28,4 +28,5 @@ jobs:
           target="$(mktemp -d)"
           python3 scripts/install.py --dest "$target"
           test -f "$target/horizon-scout/SKILL.md"
+          test -f "$target/evidence-echo-forensics/SKILL.md"
           python3 scripts/install.py --dest "$target" --force
