@@ -10,6 +10,15 @@
       "summary": "Evidence-first horizon scanning and calibrated trend forecasts.",
       "requires": ["python>=3.9"],
       "tags": ["strategy", "foresight", "markets", "forecasting"]
+    },
+    {
+      "name": "evidence-echo-forensics",
+      "path": "skills/evidence-echo-forensics",
+      "version": "0.1.0",
+      "status": "experimental",
+      "summary": "Claim-level source-lineage audits for apparent consensus.",
+      "requires": ["python>=3.9 (optional deterministic utilities)"],
+      "tags": ["research", "provenance", "source-lineage", "evidence"]
     }
   ]
 }

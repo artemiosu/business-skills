@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/artemiosu/business-skills/blob/main/skills/evidence-echo-forensics/assets/records.schema.json",
+  "title": "Evidence Echo Forensics JSONL record",
+  "description": "One record per line. The bundled Python validator enforces cross-record references, date ordering, relation/dimension compatibility, cutoff safety, and derivation acyclicity.",
+  "oneOf": [
+    {"$ref": "#/$defs/case"},
+    {"$ref": "#/$defs/entity"},
+    {"$ref": "#/$defs/document_snapshot"},
+    {"$ref": "#/$defs/claim"},
+    {"$ref": "#/$defs/claim_occurrence"},
+    {"$ref": "#/$defs/origin"},
+    {"$ref": "#/$defs/origin_assignment"},
+    {"$ref": "#/$defs/lineage_edge"},
+    {"$ref": "#/$defs/adjudication"},
+    {"$ref": "#/$defs/search_log"}
+  ],
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$"},
+    "date": {"type": "string", "format": "date", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "nonblank": {"type": "string", "pattern": "\\S"},
+    "strings": {"type": "array", "maxItems": 100, "items": {"$ref": "#/$defs/nonblank"}},
+    "base": {"type": "object", "required": ["record_type", "id"], "properties": {"record_type": {"type": "string"}, "id": {"$ref": "#/$defs/id"}}},
+    "case": {
+      "type": "object", "additionalProperties": false,
+      "required": ["record_type", "id", "schema_version", "title", "mode", "corpus_contract", "case_purpose", "as_of_date", "analysis_date", "inclusion_rule", "stopping_rule", "limitations"],
+      "properties": {
+        "record_type": {"const": "case"}, "id": {"$ref": "#/$defs/id"}, "schema_version": {"const": "1.0.0"},
+        "title": {"$ref": "#/$defs/nonblank"}, "mode": {"enum": ["quick", "deep", "audit", "update"]}, "corpus_contract": {"enum": ["closed_corpus", "open_web"]}, "case_purpose": {"enum": ["operational", "synthetic_fixture"]},
+        "as_of_date": {"$ref": "#/$defs/date"}, "analysis_date": {"$ref": "#/$defs/date"},
+        "inclusion_rule": {"$ref": "#/$defs/nonblank"}, "stopping_rule": {"$ref": "#/$defs/nonblank"},
+        "decision_context": {"type": "string"}, "limitations": {"$ref": "#/$defs/strings"}, "supersedes_case_id": {"$ref": "#/$defs/id"}
+      }
+    },
+    "entity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["record_type", "id", "kind", "canonical_name", "stable_ids", "aliases"],
+      "properties": {"record_type": {"const": "entity"}, "id": {"$ref": "#/$defs/id"}, "kind": {"enum": ["person", "organization", "publisher", "data_producer", "other"]}, "canonical_name": {"$ref": "#/$defs/nonblank"}, "stable_ids": {"$ref": "#/$defs/strings"}, "aliases": {"$ref": "#/$defs/strings"}, "notes": {"type": "string"}}
+    },
+    "document_snapshot": {
+      "type": "object", "additionalProperties": false,
+      "required": ["record_type", "id", "work_id", "version_id", "title", "publisher_entity_id", "author_entity_ids", "locator", "published_at", "retrieved_at", "source_type", "language", "access_status", "provenance_status", "correction_status", "directness", "interest", "cutoff_availability", "stable_identifiers", "conflict_notes"],
+      "properties": {
+        "record_type": {"const": "document_snapshot"}, "id": {"$ref": "#/$defs/id"}, "work_id": {"$ref": "#/$defs/nonblank"}, "version_id": {"$ref": "#/$defs/nonblank"}, "title": {"$ref": "#/$defs/nonblank"},
+        "publisher_entity_id": {"$ref": "#/$defs/id"}, "author_entity_ids": {"$ref": "#/$defs/strings"}, "locator": {"$ref": "#/$defs/nonblank"}, "canonical_locator": {"type": "string"},
+        "published_at": {"oneOf": [{"$ref": "#/$defs/date"}, {"type": "null"}]}, "retrieved_at": {"$ref": "#/$defs/date"}, "source_type": {"enum": ["press_release", "news_report", "research_paper", "dataset", "filing", "official_record", "survey", "interview", "social_post", "transcript", "ai_summary", "other"]}, "language": {"$ref": "#/$defs/nonblank"},
+        "access_status": {"enum": ["full", "partial", "metadata_only", "inaccessible"]}, "provenance_status": {"enum": ["verified", "partially_verified", "unverified"]},
+        "correction_status": {"enum": ["checked_none_found", "corrected", "retracted", "superseded", "withdrawn", "not_checked", "not_applicable", "unknown"]},
+        "directness": {"enum": ["primary", "secondary", "unknown"]}, "interest": {"enum": ["interested", "disinterested", "unknown"]},
+        "cutoff_availability": {"enum": ["contemporary_retrieval", "verified_pre_cutoff", "unknown"]}, "stable_identifiers": {"$ref": "#/$defs/strings"},
+        "content_sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}, "conflict_notes": {"$ref": "#/$defs/strings"}, "date_notes": {"type": "string"}, "notes": {"type": "string"}
+      }
+    },
+    "claim": {
+      "type": "object", "additionalProperties": false,
+      "required": ["record_type", "id", "text", "materiality", "claim_type", "scope", "counterevidence_search"],
+      "properties": {"record_type": {"const": "claim"}, "id": {"$ref": "#/$defs/id"}, "text": {"$ref": "#/$defs/nonblank"}, "materiality": {"enum": ["critical", "important", "context"]}, "claim_type": {"enum": ["observation", "measurement", "estimate", "inference", "forecast", "opinion", "allegation"]}, "scope": {"type": "object", "additionalProperties": false, "required": ["population", "metric", "denominator", "geography", "period", "modality"], "properties": {"population": {"$ref": "#/$defs/nonblank"}, "metric": {"$ref": "#/$defs/nonblank"}, "denominator": {"$ref": "#/$defs/nonblank"}, "geography": {"$ref": "#/$defs/nonblank"}, "period": {"$ref": "#/$defs/nonblank"}, "modality": {"$ref": "#/$defs/nonblank"}}}, "counterevidence_search": {"enum": ["completed", "limited", "not_run"]}, "decision_use": {"type": "string"}, "notes": {"type": "string"}}
+    },
+    "claim_occurrence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["record_type", "id", "claim_id", "document_id", "stance", "support_relation", "expressed_text", "text_kind", "source_locator", "available_at", "evidence_status", "method_family"],
+      "properties": {"record_type": {"const": "claim_occurrence"}, "id": {"$ref": "#/$defs/id"}, "claim_id": {"$ref": "#/$defs/id"}, "document_id": {"$ref": "#/$defs/id"}, "stance": {"enum": ["supports", "contradicts", "neutral", "inaccessible"]}, "support_relation": {"enum": ["direct", "partial", "mentions", "inaccessible"]}, "expressed_text": {"$ref": "#/$defs/nonblank"}, "text_kind": {"enum": ["quote", "paraphrase"]}, "source_locator": {"$ref": "#/$defs/nonblank"}, "available_at": {"oneOf": [{"$ref": "#/$defs/date"}, {"type": "null"}]}, "evidence_status": {"enum": ["active", "superseded", "withdrawn", "uncertain"]}, "method_family": {"$ref": "#/$defs/nonblank"}, "date_notes": {"type": "string"}, "notes": {"type": "string"}}
+    },
+    "origin": {
+      "type": "object", "additionalProperties": false,
+      "required": ["record_type", "id", "origin_type", "description", "verification_status", "interest"],
+      "properties": {"record_type": {"const": "origin"}, "id": {"$ref": "#/$defs/id"}, "origin_type": {"enum": ["direct_observation", "dataset", "experiment", "survey", "interview", "filing", "official_statement", "press_release", "wire_report", "analysis", "transaction", "other", "unknown"]}, "description": {"$ref": "#/$defs/nonblank"}, "producer_entity_id": {"$ref": "#/$defs/id"}, "stable_identifier": {"type": "string"}, "observed_period": {"type": "string"}, "version": {"type": "string"}, "verification_status": {"enum": ["verified", "partially_verified", "unverified"]}, "interest": {"enum": ["interested", "disinterested", "unknown"]}, "notes": {"type": "string"}}
+    },
+    "origin_assignment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["record_type", "id", "occurrence_id", "origin_id", "role", "support_mode", "support_unit_id", "status", "basis"],
+      "properties": {"record_type": {"const": "origin_assignment"}, "id": {"$ref": "#/$defs/id"}, "occurrence_id": {"$ref": "#/$defs/id"}, "origin_id": {"$ref": "#/$defs/id"}, "role": {"enum": ["underlying_observation", "reporting_origin", "analysis_origin"]}, "support_mode": {"enum": ["sufficient", "jointly_necessary", "corroborative", "contextual"]}, "support_unit_id": {"$ref": "#/$defs/id"}, "status": {"enum": ["machine_observed", "human_adjudicated", "inferred_candidate", "unresolved", "rejected"]}, "basis": {"$ref": "#/$defs/nonblank"}, "notes": {"type": "string"}, "supersedes_record_id": {"$ref": "#/$defs/id"}}
+    },
+    "lineage_edge": {
+      "type": "object", "additionalProperties": false,
+      "required": ["record_type", "id", "from_occurrence_id", "to_occurrence_id", "relation", "dimension", "status", "basis", "distortion_flags"],
+      "properties": {"record_type": {"const": "lineage_edge"}, "id": {"$ref": "#/$defs/id"}, "from_occurrence_id": {"$ref": "#/$defs/id"}, "to_occurrence_id": {"$ref": "#/$defs/id"}, "relation": {"enum": ["exact_copy_of", "version_of", "republishes", "wire_syndication", "translates", "quotes", "summarizes", "cites", "uses_dataset", "reports_same_observation", "independently_observes", "shared_method", "common_owner", "common_funder", "ai_transformation", "supersedes", "conflicts_with", "citation_only", "possible_common_origin"]}, "dimension": {"enum": ["asset", "editorial", "observation", "dataset", "method", "ownership", "claim"]}, "status": {"enum": ["machine_observed", "human_adjudicated", "inferred_candidate", "unresolved", "rejected"]}, "basis": {"$ref": "#/$defs/nonblank"}, "distortion_flags": {"$ref": "#/$defs/strings"}, "notes": {"type": "string"}, "supersedes_record_id": {"$ref": "#/$defs/id"}}
+    },
+    "adjudication": {
+      "type": "object", "additionalProperties": false,
+      "required": ["record_type", "id", "target_id", "label", "rationale", "evidence_refs", "reviewer", "created_at"],
+      "properties": {"record_type": {"const": "adjudication"}, "id": {"$ref": "#/$defs/id"}, "target_id": {"$ref": "#/$defs/id"}, "label": {"enum": ["confirmed", "rejected", "unresolved", "superseded"]}, "rationale": {"$ref": "#/$defs/nonblank"}, "evidence_refs": {"$ref": "#/$defs/strings"}, "reviewer": {"$ref": "#/$defs/nonblank"}, "created_at": {"$ref": "#/$defs/date"}, "supersedes_record_id": {"$ref": "#/$defs/id"}}
+    },
+    "search_log": {
+      "type": "object", "additionalProperties": false,
+      "required": ["record_type", "id", "query_family", "query_text", "searched_at", "provider", "language", "result_count_reviewed", "included_document_ids", "access_gap_document_ids", "excluded_result_notes"],
+      "properties": {
+        "record_type": {"const": "search_log"}, "id": {"$ref": "#/$defs/id"},
+        "query_family": {"enum": ["exact_phrase", "distinctive_bundle", "named_identifier", "earliest_archive", "corrections", "counterevidence", "multilingual", "other"]},
+        "query_text": {"$ref": "#/$defs/nonblank"}, "searched_at": {"$ref": "#/$defs/date"}, "provider": {"$ref": "#/$defs/nonblank"}, "language": {"$ref": "#/$defs/nonblank"},
+        "result_count_reviewed": {"type": "integer", "minimum": 0, "maximum": 100000}, "included_document_ids": {"$ref": "#/$defs/strings"}, "access_gap_document_ids": {"$ref": "#/$defs/strings"}, "excluded_result_notes": {"$ref": "#/$defs/strings"},
+        "search_snapshot_sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}, "notes": {"type": "string"}
+      }
+    }
+  }
+}

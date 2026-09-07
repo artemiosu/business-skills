@@ -1,6 +1,6 @@
 {
   "name": "business-skills",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Evidence-first business decision skills for AI agents.",
   "author": {
     "name": "Artemiosu",
@@ -13,11 +13,11 @@
     "longDescription": "Open, testable workflows for strategy, markets, forecasting, and business decisions—built to expose uncertainty rather than manufacture confidence.",
     "developerName": "Artemiosu",
     "category": "Productivity",
-    "capabilities": ["Business analysis", "Strategic foresight", "Forecasting"],
+    "capabilities": ["Business analysis", "Strategic foresight", "Evidence provenance", "Forecasting"],
     "defaultPrompt": [
       "$horizon-scout Scan an emerging market and produce falsifiable, calibrated hypotheses.",
-      "$horizon-scout Challenge this trend thesis with independent evidence and anti-hype gates.",
-      "$horizon-scout Update this forecast ledger using only evidence after its cutoff."
+      "$evidence-echo-forensics Trace this claim to its independent evidence origins and test whether the apparent consensus survives.",
+      "$horizon-scout Challenge this trend thesis with independent evidence and anti-hype gates."
     ]
   }
 }

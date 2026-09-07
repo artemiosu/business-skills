@@ -17,16 +17,18 @@ Not guaranteed: identical prose, research coverage, model judgment, tools, laten
 ## Installation
 
 ```bash
-npx skills add artemiosu/business-skills --skill horizon-scout
+npx skills add artemiosu/business-skills
+# Or select one skill:
+npx skills add artemiosu/business-skills --skill evidence-echo-forensics
 ```
 
 GitHub Copilot CLI (GitHub CLI 2.90+ while `gh skill` is preview):
 
 ```bash
-gh skill install artemiosu/business-skills horizon-scout
+gh skill install artemiosu/business-skills evidence-echo-forensics
 ```
 
-Manual: copy `skills/horizon-scout` to a supported personal/project directory. Common locations include `~/.agents/skills/`, `~/.codex/skills/`, `~/.claude/skills/`, `~/.cursor/skills/`, and `~/.copilot/skills/`; consult current host documentation.
+Manual: copy the desired folder from `skills/` to a supported personal/project directory. Common locations include `~/.agents/skills/`, `~/.codex/skills/`, `~/.claude/skills/`, `~/.cursor/skills/`, and `~/.copilot/skills/`; consult current host documentation.
 
 ## Release test matrix
 
@@ -36,7 +38,7 @@ Manual: copy `skills/horizon-scout` to a supported personal/project directory. C
 4. Compare invariants: cutoff, lineage, counterevidence, gates, resolvability, and action boundary.
 5. Publish deviations instead of silently forking behavior.
 
-Status levels: `structural`, `mechanical`, `behavioral`, `field-calibrated`. Horizon Scout is structurally and mechanically tested; broad host behavioral results are pending.
+Status levels: `structural`, `mechanical`, `behavioral`, `field-calibrated`. Horizon Scout and Evidence Echo Forensics are structurally and mechanically tested; broad host behavioral and field results are pending.
 
 ## Adapter policy
 

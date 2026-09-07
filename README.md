@@ -32,7 +32,7 @@ This is the core promise: replace “AI says this market is growing” with an a
 ### Install with the Agent Skills CLI
 
 ```bash
-npx skills add artemiosu/business-skills --skill horizon-scout
+npx skills add artemiosu/business-skills
 ```
 
 The CLI supports multiple skill-aware agents and records anonymous install telemetry by default; set `DISABLE_TELEMETRY=1` to opt out. A local installer is also available below.
@@ -58,6 +58,7 @@ The installer supports `--agent codex|claude-code|cursor|copilot|windsurf|gemini
 | Skill | Use it when you need to… | Status |
 |---|---|---|
 | [Horizon Scout](skills/horizon-scout/README.md) | detect emerging technology or market shifts, challenge hype, build scenarios, and log calibrated forecasts | Experimental — mechanics tested, field calibration in progress |
+| [Evidence Echo Forensics](skills/evidence-echo-forensics/README.md) | trace apparent consensus back to independent observations, datasets, interviews, or releases and expose claim mutation | Experimental — deterministic lineage mechanics tested |
 
 More skills will follow. Each addition must pass the same evidence, safety, documentation, and evaluation standards.
 
@@ -75,7 +76,7 @@ The portable source of truth is the open Agent Skills `SKILL.md` format. Codex-s
 
 Exact outputs cannot be identical across models and tool environments. Business Skills targets the same decision contract, evidence rules, safety boundaries, structured artifacts, and deterministic tests on every compatible host. See [Compatibility](docs/COMPATIBILITY.md).
 
-## Why Horizon Scout is different
+## Why these skills are different
 
 ```text
 Weak signals → source lineage → anti-hype gates → competing hypotheses
@@ -90,27 +91,40 @@ Weak signals → source lineage → anti-hype gates → competing hypotheses
 - Preserves forecasts so calibration can be measured later.
 - Includes a dependency-free CLI and adversarial test suite.
 
+Evidence Echo Forensics adds the upstream provenance layer:
+
+```text
+12 citations → atomic claim occurrences → typed lineage
+             → 1–N support units → consensus-collapse test
+```
+
+It audits independence without pretending that provenance proves truth or intent.
+
 ## Pick your starting point
 
 - **Founder:** `$horizon-scout Is this market ready inside my 18-month runway, and can a new entrant capture value?`
 - **Strategist:** `$horizon-scout Map the stalled, base, and accelerated scenarios for this shift and define monitoring triggers.`
 - **Investor or researcher:** `$horizon-scout Build a cutoff-safe evidence map, competing hypotheses, and resolvable forecasts for this thesis.`
+- **Evidence auditor:** `$evidence-echo-forensics Trace this widely repeated claim to its underlying observations and show whether the apparent consensus survives.`
 
-Start with the [live AI-accounting case](examples/ai-accounting-agents-2026/README.md), then use the [synthetic walkthrough](examples/horizon-scout-synthetic-case.md) to inspect the minimal artifact shape.
+Start with the [live AI-accounting case](examples/ai-accounting-agents-2026/README.md), the [Horizon Scout synthetic walkthrough](examples/horizon-scout-synthetic-case.md), the [Evidence Echo synthetic case](examples/evidence-echo-forensics-synthetic-case.md), or its [independent two-part forward test](examples/evidence-echo-forensics-forward-test.md).
 
 ## Use without installing everything
 
-Copy `skills/horizon-scout` to your Codex skills directory. The folder contains the required `SKILL.md`, UI metadata, references, configuration, examples, and deterministic helpers.
+Copy the desired folder from `skills/` to your agent's supported skills directory. Every skill is self-contained and follows the same portable source-of-truth convention.
 
 ```bash
 python3 skills/horizon-scout/scripts/eval_harness.py
 python3 skills/horizon-scout/scripts/horizon_scout.py assess \
   skills/horizon-scout/assets/example_signals.jsonl
+python3 skills/evidence-echo-forensics/scripts/eval_harness.py
+python3 skills/evidence-echo-forensics/scripts/evidence_echo.py audit \
+  skills/evidence-echo-forensics/assets/example_records.jsonl
 ```
 
 ## Trust model
 
-These skills improve process; they do not predict the future or guarantee business outcomes. The current evaluation proves mechanics, not forecasting skill. Treat outputs as decision support. Verify important evidence and use qualified professional review for financial, legal, medical, or safety-critical decisions. See [Security](SECURITY.md) and the [Horizon Scout methodology](skills/horizon-scout/references/workflow.md).
+These skills improve process; they do not predict the future, determine truth automatically, or guarantee business outcomes. Current evaluations prove mechanics, not field accuracy. Treat outputs as decision support. Verify important evidence and use qualified professional review for financial, legal, medical, or safety-critical decisions. See [Security](SECURITY.md), the [Horizon Scout methodology](skills/horizon-scout/references/workflow.md), and the [Evidence Echo workflow](skills/evidence-echo-forensics/references/workflow.md).
 
 ## Contribute
 

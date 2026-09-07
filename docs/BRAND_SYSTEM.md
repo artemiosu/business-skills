@@ -22,5 +22,6 @@ Use dots, partial arcs, paths, probability bands, thresholds, and outcome rings.
 - `.github/assets/social-preview-master.png`: lossless generated master.
 - `.github/assets/social-preview.jpg`: production 1280×640 progressive JPEG below GitHub's 1 MB limit.
 - `skills/horizon-scout/assets/icon.svg`: deterministic small-size Horizon Aperture mark.
+- `skills/evidence-echo-forensics/assets/icon.svg`: one evidentiary origin branching into an apparent multi-source echo.
 
 Before release, inspect the social preview at 1280×640, 640×320, and 320×160. The title must remain immediate; the right side must still read as signals → evidence → forecast/scenarios → decision.
