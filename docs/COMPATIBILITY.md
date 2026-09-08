@@ -19,13 +19,13 @@ Not guaranteed: identical prose, research coverage, model judgment, tools, laten
 ```bash
 npx skills add artemiosu/business-skills
 # Or select one skill:
-npx skills add artemiosu/business-skills --skill evidence-echo-forensics
+npx skills add artemiosu/business-skills --skill autonomy-governor
 ```
 
 GitHub Copilot CLI (GitHub CLI 2.90+ while `gh skill` is preview):
 
 ```bash
-gh skill install artemiosu/business-skills evidence-echo-forensics
+gh skill install artemiosu/business-skills autonomy-governor
 ```
 
 Manual: copy the desired folder from `skills/` to a supported personal/project directory. Common locations include `~/.agents/skills/`, `~/.codex/skills/`, `~/.claude/skills/`, `~/.cursor/skills/`, and `~/.copilot/skills/`; consult current host documentation.
@@ -35,10 +35,10 @@ Manual: copy the desired folder from `skills/` to a supported personal/project d
 1. Validate the Agent Skills structure and every relative reference.
 2. Run deterministic scripts under supported Python versions.
 3. Run identical behavioral cases on available hosts, recording host/model/version.
-4. Compare invariants: cutoff, lineage, counterevidence, gates, resolvability, and action boundary.
+4. Compare invariants: cutoff, lineage, counterevidence, gates, resolvability, authority, and action boundary.
 5. Publish deviations instead of silently forking behavior.
 
-Status levels: `structural`, `mechanical`, `behavioral`, `field-calibrated`. Horizon Scout and Evidence Echo Forensics are structurally and mechanically tested; broad host behavioral and field results are pending.
+Status levels: `structural`, `mechanical`, `behavioral`, `field-calibrated`. Horizon Scout, Evidence Echo Forensics, and Autonomy Governor are structurally and mechanically tested; broad host behavioral and field results are pending.
 
 ## Adapter policy
 

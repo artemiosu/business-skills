@@ -59,6 +59,7 @@ The installer supports `--agent codex|claude-code|cursor|copilot|windsurf|gemini
 |---|---|---|
 | [Horizon Scout](skills/horizon-scout/README.md) | detect emerging technology or market shifts, challenge hype, build scenarios, and log calibrated forecasts | Experimental — mechanics tested, field calibration in progress |
 | [Evidence Echo Forensics](skills/evidence-echo-forensics/README.md) | trace apparent consensus back to independent observations, datasets, interviews, or releases and expose claim mutation | Experimental — deterministic lineage mechanics tested |
+| [Autonomy Governor](skills/autonomy-governor/README.md) | turn an AI-agent workflow into testable authority, limits, approvals, enforcement, rollback, and stop conditions | Experimental — deterministic policy mechanics tested |
 
 More skills will follow. Each addition must pass the same evidence, safety, documentation, and evaluation standards.
 
@@ -100,14 +101,24 @@ Evidence Echo Forensics adds the upstream provenance layer:
 
 It audits independence without pretending that provenance proves truth or intent.
 
+Autonomy Governor adds a boundary between what an agent can technically do and what it is authorized to do:
+
+```text
+tool capability → complete action universe → authority contract
+                → ALLOW / APPROVAL_REQUIRED / DENY / HOLD
+```
+
+It tests policy artifacts without pretending to be IAM, a runtime firewall, or permission to execute an action.
+
 ## Pick your starting point
 
 - **Founder:** `$horizon-scout Is this market ready inside my 18-month runway, and can a new entrant capture value?`
 - **Strategist:** `$horizon-scout Map the stalled, base, and accelerated scenarios for this shift and define monitoring triggers.`
 - **Investor or researcher:** `$horizon-scout Build a cutoff-safe evidence map, competing hypotheses, and resolvable forecasts for this thesis.`
 - **Evidence auditor:** `$evidence-echo-forensics Trace this widely repeated claim to its underlying observations and show whether the apparent consensus survives.`
+- **Agent owner:** `$autonomy-governor Compile this workflow and tool list into a bounded authority contract; expose excessive agency and model-only controls.`
 
-Start with the [live AI-accounting case](examples/ai-accounting-agents-2026/README.md), the [Horizon Scout synthetic walkthrough](examples/horizon-scout-synthetic-case.md), the [Evidence Echo synthetic case](examples/evidence-echo-forensics-synthetic-case.md), or its [independent two-part forward test](examples/evidence-echo-forensics-forward-test.md).
+Start with the [live AI-accounting case](examples/ai-accounting-agents-2026/README.md), the [Horizon Scout synthetic walkthrough](examples/horizon-scout-synthetic-case.md), the [Evidence Echo synthetic case](examples/evidence-echo-forensics-synthetic-case.md), its [independent two-part forward test](examples/evidence-echo-forensics-forward-test.md), or the [Autonomy Governor synthetic walkthrough](examples/autonomy-governor-synthetic-case.md).
 
 ## Use without installing everything
 
@@ -120,11 +131,15 @@ python3 skills/horizon-scout/scripts/horizon_scout.py assess \
 python3 skills/evidence-echo-forensics/scripts/eval_harness.py
 python3 skills/evidence-echo-forensics/scripts/evidence_echo.py audit \
   skills/evidence-echo-forensics/assets/example_records.jsonl
+python3 skills/autonomy-governor/scripts/eval_harness.py
+python3 skills/autonomy-governor/scripts/autonomy_governor.py simulate \
+  skills/autonomy-governor/assets/example_contract.json \
+  skills/autonomy-governor/assets/example_scenarios.jsonl
 ```
 
 ## Trust model
 
-These skills improve process; they do not predict the future, determine truth automatically, or guarantee business outcomes. Current evaluations prove mechanics, not field accuracy. Treat outputs as decision support. Verify important evidence and use qualified professional review for financial, legal, medical, or safety-critical decisions. See [Security](SECURITY.md), the [Horizon Scout methodology](skills/horizon-scout/references/workflow.md), and the [Evidence Echo workflow](skills/evidence-echo-forensics/references/workflow.md).
+These skills improve process; they do not predict the future, determine truth automatically, grant authority, enforce permissions, or guarantee business outcomes. Current evaluations prove mechanics, not field accuracy. Treat outputs as decision support. Verify important evidence and use qualified professional review for financial, legal, medical, or safety-critical decisions. See [Security](SECURITY.md), the [Horizon Scout methodology](skills/horizon-scout/references/workflow.md), the [Evidence Echo workflow](skills/evidence-echo-forensics/references/workflow.md), and the [Autonomy Governor workflow](skills/autonomy-governor/references/workflow.md).
 
 ## Contribute
 

@@ -5,11 +5,11 @@
 - Resolve and update the first cutoff-dated public Horizon Scout case.
 - Gather preregistered real-world calibration cases without retrospective selection.
 - Field-test Evidence Echo Forensics on a cutoff-dated public source-lineage case.
+- Field-test Autonomy Governor against a real workflow with external control owners and no execution authority.
 - Add verified host/version results to the compatibility matrix.
 
 ## Next
 
-- Autonomy Governor: compile business authority, limits, escalation, and rollback for AI agents.
 - Commitment Sequencer: stage reversible bets and buy decision-changing evidence.
 - Profit-Pool Cartographer: map where margin migrates when a trend succeeds.
 - Assumption Stressgraph: expose dependency bundles, switching values, and assumption debt.

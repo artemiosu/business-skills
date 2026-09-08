@@ -1,0 +1,7 @@
+interface:
+  display_name: "Autonomy Governor"
+  short_description: "Compile and test agent authority boundaries"
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#315C46"
+  default_prompt: "Use $autonomy-governor to compile this AI-agent workflow into a testable authority contract with limits, approvals, enforcement, rollback, and stop conditions."

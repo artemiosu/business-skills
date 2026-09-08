@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/artemiosu/business-skills/blob/main/skills/autonomy-governor/assets/action-request.schema.json",
+  "title": "Autonomy Governor action request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_type", "request_id", "timestamp", "principal_id", "agent_id",
+    "action_type", "effect", "resource", "environment", "tool_id", "data_class",
+    "target", "purpose", "state_status", "retry_count", "delegation_chain",
+    "triggered_stop_conditions"
+  ],
+  "properties": {
+    "record_type": {"const": "action_request"},
+    "request_id": {"$ref": "#/$defs/id"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "principal_id": {"$ref": "#/$defs/id"},
+    "agent_id": {"$ref": "#/$defs/id"},
+    "action_type": {"$ref": "#/$defs/id"},
+    "effect": {"enum": ["read", "create", "update", "delete", "execute", "communicate", "transfer", "approve"]},
+    "resource": {"$ref": "#/$defs/selectorText"},
+    "environment": {"$ref": "#/$defs/selectorText"},
+    "tool_id": {"$ref": "#/$defs/selectorText"},
+    "data_class": {"$ref": "#/$defs/selectorText"},
+    "target": {"$ref": "#/$defs/selectorText"},
+    "purpose": {"$ref": "#/$defs/text"},
+    "state_status": {"enum": ["known", "unknown", "partial_failure"]},
+    "retry_count": {"type": "integer", "minimum": 0},
+    "idempotency_key": {"$ref": "#/$defs/id"},
+    "amount": {
+      "type": "object", "additionalProperties": false,
+      "required": ["value", "currency"],
+      "properties": {
+        "value": {"type": "number", "minimum": 0},
+        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"}
+      }
+    },
+    "delegation_chain": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "triggered_stop_conditions": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "unavailable_controls": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "usage": {
+      "type": "object", "additionalProperties": false,
+      "required": ["actions_in_window", "cumulative_amount", "currency"],
+      "properties": {
+        "actions_in_window": {"type": "integer", "minimum": 0},
+        "cumulative_amount": {"type": "number", "minimum": 0},
+        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"}
+      }
+    },
+    "approval_receipt": {
+      "type": "object", "additionalProperties": false,
+      "required": ["receipt_id", "source", "approver_id", "approver_role", "decision", "issued_at", "expires_at", "contract_id", "contract_version", "action_digest"],
+      "properties": {
+        "receipt_id": {"$ref": "#/$defs/id"},
+        "source": {"enum": ["external_system", "human_attested", "synthetic_fixture"]},
+        "approver_id": {"$ref": "#/$defs/id"},
+        "approver_role": {"$ref": "#/$defs/id"},
+        "decision": {"enum": ["approved", "denied"]},
+        "issued_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "contract_id": {"$ref": "#/$defs/id"},
+        "contract_version": {"type": "integer", "minimum": 1},
+        "action_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    }
+  },
+  "$defs": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"},
+    "text": {"type": "string", "minLength": 1, "maxLength": 2000},
+    "selectorText": {"type": "string", "minLength": 1, "maxLength": 2000, "not": {"pattern": "(?:\\*|\\?|\\[|\\]|\\.\\.)"}}
+  }
+}
