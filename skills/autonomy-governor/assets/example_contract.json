@@ -1,0 +1,197 @@
+{
+  "schema_version": "1.0",
+  "record_type": "authority_contract",
+  "contract_id": "synthetic-support-agent-v1",
+  "version": 1,
+  "status": "approved",
+  "case_purpose": "synthetic_fixture",
+  "title": "Synthetic bounded customer-support authority",
+  "purpose": "Resolve assigned billing tickets without expanding account access",
+  "non_goals": [
+    "Do not delete customer accounts",
+    "Do not export customer data",
+    "Do not change access rights"
+  ],
+  "owner_id": "support-operations",
+  "principal": {
+    "principal_id": "support-director",
+    "kind": "role",
+    "authority_basis": "Synthetic policy GOV-17 for evaluation only"
+  },
+  "agent": {
+    "agent_id": "support-agent",
+    "build_id": "sha256:synthetic-build-001",
+    "identity_status": "verified"
+  },
+  "issued_at": "2026-09-08T12:00:00Z",
+  "effective_at": "2026-09-08T12:00:00Z",
+  "expires_at": "2026-10-08T12:00:00Z",
+  "review_at": "2026-09-22T12:00:00Z",
+  "default_decision": "deny",
+  "enforcement_mode": "runtime_enforced",
+  "action_universe": [
+    {
+      "action_type": "read_ticket",
+      "effect": "read",
+      "resources": ["crm/cases/assigned/"],
+      "environments": ["production"],
+      "tools": ["crm.read"],
+      "data_classes": ["confidential"],
+      "side_effects": ["access is logged"]
+    },
+    {
+      "action_type": "draft_reply",
+      "effect": "create",
+      "resources": ["crm/cases/assigned/"],
+      "environments": ["production"],
+      "tools": ["crm.draft"],
+      "data_classes": ["confidential"],
+      "side_effects": ["internal draft is stored"]
+    },
+    {
+      "action_type": "send_email",
+      "effect": "communicate",
+      "resources": ["crm/cases/assigned/"],
+      "environments": ["production"],
+      "tools": ["mail.send"],
+      "data_classes": ["confidential"],
+      "side_effects": ["external disclosure", "customer commitment"]
+    },
+    {
+      "action_type": "issue_refund",
+      "effect": "transfer",
+      "resources": ["billing/refunds/assigned/"],
+      "environments": ["production"],
+      "tools": ["billing.refund"],
+      "data_classes": ["confidential"],
+      "side_effects": ["financial transfer", "ledger entry"]
+    },
+    {
+      "action_type": "delete_account",
+      "effect": "delete",
+      "resources": ["identity/accounts/"],
+      "environments": ["production"],
+      "tools": ["identity.delete"],
+      "data_classes": ["restricted"],
+      "side_effects": ["irreversible customer impact"]
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "read-assigned-ticket",
+      "description": "Read only the assigned production support case",
+      "decision": "allow",
+      "risk_tier": "low",
+      "action_types": ["read_ticket"],
+      "effects": ["read"],
+      "resource_prefixes": ["crm/cases/assigned/"],
+      "environments": ["production"],
+      "tools": ["crm.read"],
+      "data_classes": ["confidential"],
+      "required_context": ["target", "purpose"],
+      "limits": {"max_actions": 100, "window_seconds": 3600, "max_retries": 2},
+      "controls": [
+        {"control_id": "case-assignment-filter", "layer": "external_enforcement", "mechanism": "CRM API restricts reads to assigned case identifiers", "owner_id": "crm-platform", "status": "verified"},
+        {"control_id": "read-audit", "layer": "monitoring", "mechanism": "CRM records principal, agent, case and timestamp", "owner_id": "security-operations", "status": "verified"}
+      ],
+      "rollback": {"classification": "not_applicable", "procedure": "Stop further access and follow the privacy incident process", "owner_id": "privacy-operations", "tested_status": "not_applicable"}
+    },
+    {
+      "rule_id": "draft-assigned-reply",
+      "description": "Create a reversible internal draft on the assigned case",
+      "decision": "allow",
+      "risk_tier": "medium",
+      "action_types": ["draft_reply"],
+      "effects": ["create"],
+      "resource_prefixes": ["crm/cases/assigned/"],
+      "environments": ["production"],
+      "tools": ["crm.draft"],
+      "data_classes": ["confidential"],
+      "required_context": ["target", "purpose", "idempotency_key"],
+      "limits": {"max_actions": 30, "window_seconds": 3600, "max_retries": 1},
+      "controls": [
+        {"control_id": "draft-only-endpoint", "layer": "external_enforcement", "mechanism": "Tool can save drafts but cannot send messages", "owner_id": "crm-platform", "status": "verified"},
+        {"control_id": "draft-idempotency", "layer": "workflow", "mechanism": "Workflow rejects a duplicate idempotency key", "owner_id": "agent-platform", "status": "verified"}
+      ],
+      "rollback": {"classification": "reversible", "procedure": "Delete the unsubmitted draft and retain its audit receipt", "owner_id": "support-operations", "tested_status": "tested"}
+    },
+    {
+      "rule_id": "send-email-with-approval",
+      "description": "A support lead approves the exact outbound message and recipient",
+      "decision": "require_approval",
+      "risk_tier": "high",
+      "action_types": ["send_email"],
+      "effects": ["communicate"],
+      "resource_prefixes": ["crm/cases/assigned/"],
+      "environments": ["production"],
+      "tools": ["mail.send"],
+      "data_classes": ["confidential"],
+      "required_context": ["target", "purpose", "idempotency_key"],
+      "limits": {"max_actions": 20, "window_seconds": 3600, "max_retries": 0},
+      "controls": [
+        {"control_id": "mail-approval-gateway", "layer": "external_enforcement", "mechanism": "Mail gateway verifies an action-bound approval and assigned recipient", "owner_id": "platform-security", "status": "verified"},
+        {"control_id": "mail-receipt", "layer": "monitoring", "mechanism": "Immutable external mail ID is linked to request and decision", "owner_id": "security-operations", "status": "verified"}
+      ],
+      "approval": {"mode": "fresh", "approver_roles": ["support-lead"], "separation_of_duties": true, "max_age_seconds": 900},
+      "rollback": {"classification": "compensatable", "procedure": "Open a correction workflow and notify the support lead", "owner_id": "support-operations", "tested_status": "tested"}
+    },
+    {
+      "rule_id": "refund-with-approval-and-budget",
+      "description": "A support lead approves an exact refund inside per-action and cumulative limits",
+      "decision": "require_approval",
+      "risk_tier": "high",
+      "action_types": ["issue_refund"],
+      "effects": ["transfer"],
+      "resource_prefixes": ["billing/refunds/assigned/"],
+      "environments": ["production"],
+      "tools": ["billing.refund"],
+      "data_classes": ["confidential"],
+      "required_context": ["target", "purpose", "idempotency_key", "amount", "usage"],
+      "limits": {"max_amount": 50, "max_cumulative_amount": 200, "currency": "USD", "max_actions": 5, "window_seconds": 86400, "max_retries": 0},
+      "controls": [
+        {"control_id": "refund-policy-point", "layer": "external_enforcement", "mechanism": "Billing service verifies approval, amount, cumulative usage and idempotency", "owner_id": "billing-platform", "status": "verified"},
+        {"control_id": "refund-ledger", "layer": "monitoring", "mechanism": "Billing ledger records request, approval, transaction and outcome", "owner_id": "finance-operations", "status": "verified"}
+      ],
+      "approval": {"mode": "fresh", "approver_roles": ["support-lead"], "separation_of_duties": true, "max_age_seconds": 900},
+      "rollback": {"classification": "compensatable", "procedure": "Escalate to finance for a correcting charge under a separate authority", "owner_id": "finance-operations", "tested_status": "tested"}
+    },
+    {
+      "rule_id": "deny-account-deletion",
+      "description": "The support agent never deletes customer accounts",
+      "decision": "deny",
+      "risk_tier": "critical",
+      "action_types": ["delete_account"],
+      "effects": ["delete"],
+      "resource_prefixes": ["identity/accounts/"],
+      "environments": ["production"],
+      "tools": ["identity.delete"],
+      "data_classes": ["restricted"],
+      "required_context": [],
+      "limits": {},
+      "controls": [
+        {"control_id": "no-delete-scope", "layer": "external_enforcement", "mechanism": "Agent credential has no identity deletion permission", "owner_id": "identity-platform", "status": "verified"}
+      ],
+      "rollback": {"classification": "irreversible", "procedure": "No agent execution path exists; escalate requests to the account governance process", "owner_id": "identity-governance", "tested_status": "tested"}
+    }
+  ],
+  "stop_conditions": [
+    {"condition_id": "policy-store-unavailable", "description": "The active contract cannot be retrieved or verified", "response": "hold", "owner_id": "agent-platform"},
+    {"condition_id": "partial-write-state", "description": "A write may have completed but its outcome is unknown", "response": "hold", "owner_id": "support-operations"},
+    {"condition_id": "control-unavailable", "description": "A required hard control is unavailable", "response": "hold", "owner_id": "platform-security"},
+    {"condition_id": "tool-drift", "description": "Tool schema, scope, account or side effects changed", "response": "hold", "owner_id": "agent-platform"}
+  ],
+  "delegation": {"allowed": false, "max_depth": 0, "allowed_agent_ids": [], "attenuation_required": true},
+  "audit": {
+    "required_fields": ["request_id", "action_digest", "contract_digest", "decision", "matched_rule_ids", "principal_id", "agent_id", "timestamp", "outcome_receipt"],
+    "retention_days": 365,
+    "sink": "Synthetic tamper-evident audit service",
+    "sink_status": "verified",
+    "tamper_evident": true
+  },
+  "change_control": {
+    "approval_status": "synthetic_fixture",
+    "approved_by": ["fictional-governance-reviewer"],
+    "previous_version": null,
+    "revocation_owner_id": "support-director"
+  }
+}

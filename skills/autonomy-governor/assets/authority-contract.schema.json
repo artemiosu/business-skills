@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/artemiosu/business-skills/blob/main/skills/autonomy-governor/assets/authority-contract.schema.json",
+  "title": "Autonomy Governor authority contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "record_type", "contract_id", "version", "status",
+    "case_purpose", "title", "purpose", "non_goals", "owner_id", "principal",
+    "agent", "issued_at", "effective_at", "expires_at", "review_at",
+    "default_decision", "enforcement_mode", "action_universe", "rules",
+    "stop_conditions", "delegation", "audit", "change_control"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "record_type": {"const": "authority_contract"},
+    "contract_id": {"$ref": "#/$defs/id"},
+    "version": {"type": "integer", "minimum": 1},
+    "status": {"enum": ["draft", "approved", "retired"]},
+    "case_purpose": {"enum": ["operational", "synthetic_fixture"]},
+    "title": {"$ref": "#/$defs/text"},
+    "purpose": {"$ref": "#/$defs/text"},
+    "non_goals": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/text"}},
+    "owner_id": {"$ref": "#/$defs/id"},
+    "principal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["principal_id", "kind", "authority_basis"],
+      "properties": {
+        "principal_id": {"$ref": "#/$defs/id"},
+        "kind": {"enum": ["person", "role", "service"]},
+        "authority_basis": {"$ref": "#/$defs/text"}
+      }
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["agent_id", "build_id", "identity_status"],
+      "properties": {
+        "agent_id": {"$ref": "#/$defs/id"},
+        "build_id": {"$ref": "#/$defs/text"},
+        "identity_status": {"enum": ["verified", "declared", "unknown"]}
+      }
+    },
+    "issued_at": {"type": "string", "format": "date-time"},
+    "effective_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "review_at": {"type": "string", "format": "date-time"},
+    "default_decision": {"const": "deny"},
+    "enforcement_mode": {"enum": ["design_only", "partially_enforced", "runtime_enforced"]},
+    "action_universe": {
+      "type": "array", "minItems": 1,
+      "items": {"$ref": "#/$defs/action"}
+    },
+    "rules": {
+      "type": "array", "minItems": 1,
+      "items": {"$ref": "#/$defs/rule"}
+    },
+    "stop_conditions": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["condition_id", "description", "response", "owner_id"],
+        "properties": {
+          "condition_id": {"$ref": "#/$defs/id"},
+          "description": {"$ref": "#/$defs/text"},
+          "response": {"const": "hold"},
+          "owner_id": {"$ref": "#/$defs/id"}
+        }
+      }
+    },
+    "delegation": {"$ref": "#/$defs/delegation"},
+    "audit": {
+      "type": "object", "additionalProperties": false,
+      "required": ["required_fields", "retention_days", "sink", "sink_status", "tamper_evident"],
+      "properties": {
+        "required_fields": {"type": "array", "minItems": 5, "items": {"$ref": "#/$defs/id"}},
+        "retention_days": {"type": "integer", "minimum": 1},
+        "sink": {"$ref": "#/$defs/text"},
+        "sink_status": {"enum": ["verified", "declared", "unknown"]},
+        "tamper_evident": {"type": "boolean"}
+      }
+    },
+    "change_control": {
+      "type": "object", "additionalProperties": false,
+      "required": ["approval_status", "approved_by", "previous_version", "revocation_owner_id"],
+      "properties": {
+        "approval_status": {"enum": ["unreviewed", "human_attested", "system_verified", "synthetic_fixture"]},
+        "approved_by": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "previous_version": {"type": ["integer", "null"], "minimum": 1},
+        "revocation_owner_id": {"$ref": "#/$defs/id"}
+      }
+    }
+  },
+  "$defs": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"},
+    "text": {"type": "string", "minLength": 1, "maxLength": 2000},
+    "stringList": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "resourceList": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 2, "maxLength": 2000, "pattern": "/$"}},
+    "effect": {"enum": ["read", "create", "update", "delete", "execute", "communicate", "transfer", "approve"]},
+    "action": {
+      "type": "object", "additionalProperties": false,
+      "required": ["action_type", "effect", "resources", "environments", "tools", "data_classes", "side_effects"],
+      "properties": {
+        "action_type": {"$ref": "#/$defs/id"},
+        "effect": {"$ref": "#/$defs/effect"},
+        "resources": {"$ref": "#/$defs/resourceList"},
+        "environments": {"$ref": "#/$defs/stringList"},
+        "tools": {"$ref": "#/$defs/stringList"},
+        "data_classes": {"$ref": "#/$defs/stringList"},
+        "side_effects": {"$ref": "#/$defs/stringList"}
+      }
+    },
+    "control": {
+      "type": "object", "additionalProperties": false,
+      "required": ["control_id", "layer", "mechanism", "owner_id", "status"],
+      "properties": {
+        "control_id": {"$ref": "#/$defs/id"},
+        "layer": {"enum": ["external_enforcement", "workflow", "monitoring", "model_instruction"]},
+        "mechanism": {"$ref": "#/$defs/text"},
+        "owner_id": {"$ref": "#/$defs/id"},
+        "status": {"enum": ["verified", "declared", "missing", "unknown"]}
+      }
+    },
+    "approval": {
+      "type": "object", "additionalProperties": false,
+      "required": ["mode", "approver_roles", "separation_of_duties", "max_age_seconds"],
+      "properties": {
+        "mode": {"enum": ["fresh", "standing"]},
+        "approver_roles": {"$ref": "#/$defs/stringList"},
+        "separation_of_duties": {"type": "boolean"},
+        "max_age_seconds": {"type": "integer", "minimum": 1}
+      }
+    },
+    "rollback": {
+      "type": "object", "additionalProperties": false,
+      "required": ["classification", "procedure", "owner_id", "tested_status"],
+      "properties": {
+        "classification": {"enum": ["reversible", "compensatable", "irreversible", "not_applicable"]},
+        "procedure": {"$ref": "#/$defs/text"},
+        "owner_id": {"$ref": "#/$defs/id"},
+        "tested_status": {"enum": ["tested", "untested", "not_applicable"]}
+      }
+    },
+    "delegation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["allowed", "max_depth", "allowed_agent_ids", "attenuation_required"],
+      "properties": {
+        "allowed": {"type": "boolean"},
+        "max_depth": {"type": "integer", "minimum": 0},
+        "allowed_agent_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "attenuation_required": {"const": true}
+      }
+    },
+    "limits": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "max_amount": {"type": "number", "minimum": 0},
+        "max_cumulative_amount": {"type": "number", "minimum": 0},
+        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+        "max_actions": {"type": "integer", "minimum": 1},
+        "window_seconds": {"type": "integer", "minimum": 1},
+        "max_retries": {"type": "integer", "minimum": 0}
+      }
+    },
+    "rule": {
+      "type": "object", "additionalProperties": false,
+      "required": ["rule_id", "description", "decision", "risk_tier", "action_types", "effects", "resource_prefixes", "environments", "tools", "data_classes", "required_context", "limits", "controls", "rollback"],
+      "properties": {
+        "rule_id": {"$ref": "#/$defs/id"},
+        "description": {"$ref": "#/$defs/text"},
+        "decision": {"enum": ["allow", "require_approval", "deny"]},
+        "risk_tier": {"enum": ["low", "medium", "high", "critical"]},
+        "action_types": {"$ref": "#/$defs/stringList"},
+        "effects": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/effect"}},
+        "resource_prefixes": {"$ref": "#/$defs/resourceList"},
+        "environments": {"$ref": "#/$defs/stringList"},
+        "tools": {"$ref": "#/$defs/stringList"},
+        "data_classes": {"$ref": "#/$defs/stringList"},
+        "required_context": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "limits": {"$ref": "#/$defs/limits"},
+        "controls": {"type": "array", "items": {"$ref": "#/$defs/control"}},
+        "approval": {"$ref": "#/$defs/approval"},
+        "rollback": {"$ref": "#/$defs/rollback"},
+        "delegation": {"$ref": "#/$defs/delegation"}
+      }
+    }
+  }
+}

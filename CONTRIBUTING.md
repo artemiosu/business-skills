@@ -20,6 +20,7 @@ Place each skill at `skills/<lowercase-hyphen-name>/`. Required: `SKILL.md`. Rec
 python3 scripts/validate_repository.py
 python3 skills/horizon-scout/scripts/eval_harness.py
 python3 skills/evidence-echo-forensics/scripts/eval_harness.py
+python3 skills/autonomy-governor/scripts/eval_harness.py
 ```
 
 For a new skill, also run the current Codex skill validator when available. Test a realistic request, not just wording or file presence.

@@ -32,6 +32,16 @@ Release hook:
 
 Launch only after the official skill/plugin validators, repository checks, synthetic adversarial harness, installer smoke test, and an independent forward-test artifact pass. Publish mechanical results and limitations; do not describe the skill as field-validated until a public adjudicated corpus exists.
 
+## Release 0.3.0
+
+Title: `Business Skills 0.3 — Autonomy Governor`
+
+Release hook:
+
+> A tool may be capable of an action without the agent being authorized to take it. Autonomy Governor compiles an agent workflow into a testable authority contract: principal, purpose, action, resource, limits, approvals, delegation, enforcement, rollback, audit, expiry, and stop conditions.
+
+Launch only after restrictive decision precedence, action-bound approval, cumulative limits, delegation attenuation, partial-failure holds, synthetic non-authorization, schema validation, and cross-version CI pass. Describe the utility as a policy test oracle—not IAM, a runtime firewall, a compliance certificate, or permission to execute.
+
 ## Ethical distribution loop
 
 1. Publish one compelling worked case with its forecast ledger—not generic promotion.

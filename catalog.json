@@ -19,6 +19,15 @@
       "summary": "Claim-level source-lineage audits for apparent consensus.",
       "requires": ["python>=3.9 (optional deterministic utilities)"],
       "tags": ["research", "provenance", "source-lineage", "evidence"]
+    },
+    {
+      "name": "autonomy-governor",
+      "path": "skills/autonomy-governor",
+      "version": "0.1.0",
+      "status": "experimental",
+      "summary": "Compile and test bounded authority for tool-using AI agents.",
+      "requires": ["python>=3.9 (optional deterministic utilities)"],
+      "tags": ["ai-agents", "governance", "authorization", "risk"]
     }
   ]
 }
